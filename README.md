@@ -75,6 +75,12 @@ File: `05-dependency-inversion-principle.ts`
 Contributions are welcome! If you want to:
 - Add more real-world examples
 - Improve explanations
-- Translate to another language
+- Translate into another language
 
 Feel free to open an issue or pull request 
+
+---
+
+## License
+
+This project is licensed under the MIT License.
