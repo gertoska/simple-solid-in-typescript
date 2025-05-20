@@ -24,30 +24,44 @@ This implementation violates LSP because:
 - The subclass is not a true behavioral subtype of its parent class
 */
 
-// ✅ Correct: Using interfaces to define clear contracts and avoid inheritance issues
-interface ValuableProperty {
-    valuate(): number;
+// ✅ Correct: Using interfaces to define clear contracts and proper type hierarchies
+interface Property {
+  address: string;
+  getStatus(): string;
+}
+
+interface ValuableProperty extends Property {
+  valuate(): number;
 }
 
 class AvailableProperty implements ValuableProperty {
-    constructor(public address: string, public area: number) {}
+  constructor(public address: string, public area: number) {}
 
-    public valuate(): number {
-        return AVM.estimate(this.address, this.area);
-    }
+  public getStatus(): string {
+    return 'Available';
+  }
+
+  public valuate(): number {
+    return AVM.estimate(this.address, this.area);
+  }
 }
 
-class SoldProperty {
-    constructor(public address: string, public soldPrice: number) {
-        // A sold property is not valuable
-    }
+class SoldProperty implements Property {
+  constructor(public address: string, public soldPrice: number) {}
+
+  public getStatus(): string {
+    return 'Sold';
+  }
 }
 
 /*
 This implementation follows LSP because:
-- Instead of inheritance, we use interfaces to define the contract
+- We use interface inheritance to express proper type hierarchies
+- The base Property interface defines common behavior all properties must have
+- ValuableProperty extends Property to add valuation capability
 - AvailableProperty implements ValuableProperty and can be valuated
-- SoldProperty is a separate class that doesn't need to be valuated
-- Each class represents a distinct concept without forcing invalid behavior
-- The code is more flexible and maintains type safety
+- SoldProperty implements only Property, as it doesn't need valuation
+- Any code expecting a Property can work with both AvailableProperty and SoldProperty
+- The design maintains type safety while avoiding inheritance issues
+- Each class represents a distinct concept with clear responsibilities
 */
